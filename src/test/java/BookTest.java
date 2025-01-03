@@ -12,17 +12,23 @@ import static org.mockito.Mockito.*;
 public class BookTest {
 
     @Test (expected = NullPointerException.class)
-    public void testMockException(){
-        //arrange
-
-        PowerMockito.mockStatic(AgaUtils.class);
-        BDDMockito.given(AgaUtils.getTextUppercase(any(String.class))).willThrow(new NullPointerException());
+   @Test
+public void testMockObjectStaticWithMockito() {
+    try (MockedStatic<AgaUtils> mockedStatic = mockStatic(AgaUtils.class)) {
+        // Arrange
+        mockedStatic.when(() -> AgaUtils.getTextUppercase(anyString())).thenReturn("yesterday");
 
         Book book = new Book();
-        String exp = "TODAY IS THE DAY";
+        String exp = "yesterday";
 
-        //act
+        // Act
         String act = book.getTitle();
+
+        // Assert
+        Assert.assertEquals(exp, act);
+    }
+}
+
     }
 
     @Test
